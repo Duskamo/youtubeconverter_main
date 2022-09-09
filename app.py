@@ -1,13 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 
 import sys
 from pytube import YouTube
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder="app/templates",
+            static_url_path="",
+            static_folder="app/static")
 
 @app.route("/", methods=['GET'])
 def hello():
-    return "Hello, Flask!"
+    return render_template('index.html')
 
 @app.route("/download/<link>", methods=['GET'])
 def download(link):
