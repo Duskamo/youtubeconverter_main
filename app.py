@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 import sys
 from pytube import YouTube
@@ -12,12 +12,15 @@ app = Flask(__name__,
 def hello():
     return render_template('index.html')
 
-@app.route("/download/<link>", methods=['GET'])
-def download(link):
-    yt = YouTube(link)
-    yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
+@app.route("/download", methods=['POST'])
+def download():
+    if request.method == "POST":
+        link = request.get_json()
 
-    return "Downloading youtube video..."
+        yt = YouTube(link['data'])
+        yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
+
+    return "Finished downloading youtube video."
 
 @app.route("/send_video", methods=['GET'])
 def send_video():
