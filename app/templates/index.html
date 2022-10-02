@@ -12,6 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
     <style>
@@ -35,7 +36,7 @@
     <link href="style.css" rel="stylesheet">
   </head>
   <body class="text-center">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="container d-flex w-100 h-100 p-3 mx-auto flex-column">
   <header class="masthead mb-auto">
     <div class="inner">
       <h3 class="masthead-brand">Converter</h3>
@@ -46,6 +47,7 @@
   </header>
 
   <main role="main" class="inner cover">
+
     <h1 class="cover-heading">YouTube to MP3/MP4 Converter</h1>
     <p class="lead">YouTube to MP3/MP4 converter is conversion software that helps you easily convert YouTube videos to MP3 music files or MP4 video files with just one click. There is no Signup or installation of any software to perform the conversion. It's free and easy to use. We provide unlimited conversion of YouTube videos.</p>
     <p class="lead">
@@ -56,11 +58,44 @@
         </div>
       </div>
     </p>
-    <p>
-      <button type="button" class="btn btn-dark" id="download-video">Download Video</button>
-    </p>
   </main>
-
+  <div class="container" id="video-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="" alt="Youtube Image" class="img-thumbnail" id="video-thumbnail">
+            <p><span id="video-title"></span></br>
+               Video Length: <span id="video-duration"></span> minutes</p>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-dark">
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col"><button type="button" class="btn btn-secondary video-button active" id="video-button" aria-pressed="true"><strong>Video</strong></button></th>
+                      <th scope="col"><button type="button" class="btn btn-secondary video-button" id="audio-button"><strong>Audio</strong></button></th>
+                    </tr>
+                  </thead>
+                </table>
+                <table class="table table-striped table-bordered bg-light">
+                  <thead>
+                    <tr>
+                      <th scope="col">Quality</th>
+                      <th scope="col">Size</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="video-table"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <footer class="mastfoot mt-auto">
     <div class="inner">
       <p class="text-light">&copy; BlackBoxWebDesigns 2020-2022</p>
