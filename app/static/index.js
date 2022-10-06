@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	const convertVideoButton = $('#convert-video');
-	const downloadVideoButton = $("#download-video");
+	const downloadVideoButton = $("button");
 	const youtubeUrlText = $('#youtube-url');
 	const videoButton = $('#video-button');
 	const audioButton = $('#audio-button');
@@ -12,6 +12,15 @@ $(document).ready(function() {
 	const videoTable = $('#video-table');
 
 	videoCard.hide();
+
+	$(document).on({
+		ajaxStart: function() {
+			$('#loading').show();
+		},
+		ajaxStop: function() {
+			$('#loading').hide();
+		}
+	});
 
 	videoButton.on('click', function() {
 		// Set button styling
@@ -37,7 +46,7 @@ $(document).ready(function() {
 		     		    	"<tr>" +
 				          "<td>" + html.videos[i].resolution + "</td>" +
 				          "<td>" + html.videos[i].size + "mb</td>" +
-				          '<td><button type="button" class="btn btn-primary"><i class="fa-solid fa-video"></i> Download</button></td>' +
+				          '<td><button type="button" class="btn btn-primary" id="download-button" data-type="video" data-id="' + i + '"><i class="fa-solid fa-video"></i> Download</button></td>' +
 				        "</tr>"
 				        );
 	     		    }
@@ -69,7 +78,7 @@ $(document).ready(function() {
 		     		    	"<tr>" +
 				          "<td>" + html.videos[i].resolution + "</td>" +
 				          "<td>" + html.videos[i].size + "mb</td>" +
-				          '<td><button type="button" class="btn btn-primary"><i class="fa-solid fa-headphones"></i> Download</button></td>' +
+				          '<td><button type="button" class="btn btn-primary" id="download-button" data-type="audio" data-id="' + i + '"><i class="fa-solid fa-headphones"></i> Download</button></td>' +
 				        "</tr>"
 				        );
 	     		    }
@@ -101,7 +110,7 @@ $(document).ready(function() {
 		     		    	"<tr>" +
 				          "<td>" + html.videos[i].resolution + "</td>" +
 				          "<td>" + html.videos[i].size + "mb</td>" +
-				          '<td><button type="button" class="btn btn-primary"><i class="fa-solid fa-video"></i> Download</button></td>' +
+				          '<td><button type="button" class="btn btn-primary" id="download-button" data-type="video" data-id="' + i + '"><i class="fa-solid fa-video"></i> Download</button></td>' +
 				        "</tr>"
 				        );
 	     		    }
@@ -109,11 +118,16 @@ $(document).ready(function() {
 			});
 	});
 
-	downloadVideoButton.on("click", function() {
+	$('tbody').on("click", "button", function() {
+		var dataString = youtubeUrlText.val();
+
 		$.ajax
                 ({
-                  type: "GET",
+                  type: "POST",
                   url: "/send-video",
+                  contentType: "application/json",
+							  	dataType: "json",
+								  data: JSON.stringify({"url":dataString, "type":$(this).attr('data-type'), "id":$(this).attr('data-id')}),
                   success: function(html)
                   {
                     alert(html);

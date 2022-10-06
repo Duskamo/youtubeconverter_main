@@ -12,3 +12,7 @@ main {
 	height: 100%;
 	margin: auto;
 }
+
+#loading {
+	display: None;
+}
