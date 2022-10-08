@@ -127,7 +127,7 @@ def send_video():
         return send_file(
             buffer,
             as_attachment=True,
-            attachment_filename="{0}.mp4".format(yt.title),
+            download_name="{0}.mp4".format(yt.title),
             mimetype="video/mp4"
         )
 
