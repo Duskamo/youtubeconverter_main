@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, send_file, jsonify
 
 import os
+import time
 from sys import platform
+from io import BytesIO
 from pytube import YouTube
 from pathlib import Path
 import toolz
@@ -70,21 +72,6 @@ def download():
         # Return data video json object
         return jsonify(data)
 
-        
-        # First Method
-        # downloads_path = str(Path.home() / "Downloads")
-        # if platform == "win32":
-        #     video.download(downloads_path)
-        # else:
-        #     video.download('~/Downloads')
-
-        # Second Method
-        # Send video to correct folder
-        #os.rename(os.getcwd() + "/" + "{0}.mp4".format(yt.title), os.getcwd() + "/videos/{0}.mp4".format(yt.title))
-
-        # Download file
-        #send_file(os.getcwd() + "/videos/{0}.mp4".format(yt.title), as_attachment=True)
-
     return "Finished downloading youtube video."
 
 @app.route("/send-video", methods=['POST'])
@@ -103,7 +90,7 @@ def send_video():
         elif link['type'] == 'audio':
             videos = yt.streams.filter(only_audio=True).order_by('abr').desc()
 
-
+        # Filter for a unique video list
         videosUnique = []
         if link['type'] == 'video':
             for i in range(len(videos)):
@@ -122,14 +109,35 @@ def send_video():
         # Get video to send to user via video id
         video = result[int(link['id'])]['video']
 
-        downloads_path = str(Path.home() / "Downloads")
-        if platform == "win32":
-            video.download(output_path=downloads_path)
-        else:
-            video.download(output_path='~/Downloads')
+        # Method 1
+        # downloads_path = str(Path.home() / "Downloads")
+        # if platform == "win32":
+        #     video.download(output_path=downloads_path)
+        # else:
+        #     video.download()
+
+        # # Send video file to user
+        # return send_file("{0}.mp4".format(yt.title), as_attachment=True)
+
+        # Method 2
+        buffer = BytesIO()
+        video.stream_to_buffer(buffer)
+        buffer.seek(0)
+
+        return send_file(
+            buffer,
+            as_attachment=True,
+            attachment_filename="{0}.mp4".format(yt.title),
+            mimetype="video/mp4"
+        )
 
         return "Sending audio/video file to user..."
 
+
+# @app.route('/download_exe')
+# def download_exe():
+#     path = "AutoClicker.exe"
+#     return send_file(path, as_attachment=True)
 
 
 if __name__ == "__main__":
